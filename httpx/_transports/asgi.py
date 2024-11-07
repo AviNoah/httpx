@@ -234,7 +234,7 @@ async def run_asgi(
                     yield chunk
 
             yield (status_code, response_headers, stream())
-            # Once the yielded value stops being used by the client cancel, cancel tasks
+            # Once __aexit__ is called from ASGIResponseByteStream, cancel tasks
             tg.cancel_scope.cancel()
     except ExceptionGroup as exc_group:
         raise exc_group.exceptions[0]  # only run_app should raise exceptions
